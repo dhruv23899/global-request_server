@@ -123,6 +123,6 @@ gr.get("/get_update_info_global_request/:id", (req, res) => {
   });
 
 //module.exports = gr
-gr.listen(5003, () => {
+gr.listen(process.env.PORT || 5003, () => {
   console.log("listening at port: 5003");
 });
