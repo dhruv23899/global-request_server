@@ -6,7 +6,9 @@ var Global_Request_Schema = new Schema({
   title: { type: String },
   desc: { type: String },
   user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: false },  //will be added after user is implemented
-  ms_mf: {type:String, required:true}
+  ms_mf: {type:String, required:true},
+  status:{type:String, required:true},
+  link_msmf:{type:String}
 });
 const Global_Request = mongoose.model(
   "Global_Request_Schema",
