@@ -43,7 +43,9 @@ gr.post("/add_global_request", (req,res) => {
     let desc = req.body.desc;
     let user = req.body.user;
     let ms_mf = req.body.ms_mf
-    Global_Request.create({Id:Id,title: title,desc: desc,user: user, ms_mf:ms_mf},function(err,globalreq){
+    let status = req.body.status
+    let link_msmf = null
+    Global_Request.create({title: title,desc: desc,user: user, ms_mf:ms_mf,status:status,link_msmf:link_msmf},function(err,globalreq){
       if(err){
         console.log(err);
         res.send({status:false,error:err})
@@ -55,6 +57,19 @@ gr.post("/add_global_request", (req,res) => {
     })
 });
 
+gr.post("/handle_request",(req,res)=>{
+  let status = req.body.status || "handled";
+  let link_msmf = req.body.link_msmf;
+  Global_Request.findByIdAndUpdate(req.body.req_id,{status:status,link_msmf:link_msmf},function(err,upreq){
+    if(err){
+      console.log("Error "+err)
+      res.send({status:false,error:err})
+    }else {
+      console.log("Handled Request")
+      res.send({status:true,req:upreq})
+    }
+  })
+})
 
 gr.use("/retrieve_all", (req,res) => {
     Global_Request.find({},(err,all_global_requests)=>{
@@ -123,6 +138,6 @@ gr.get("/get_update_info_global_request/:id", (req, res) => {
   });
 
 //module.exports = gr
-gr.listen(process.env.PORT || 5003, () => {
+gr.listen(process.env.PORT||5003, () => {
   console.log("listening at port: 5003");
 });
